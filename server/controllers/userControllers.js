@@ -9,6 +9,7 @@ import {
 } from '../utils/generateToken.js';
 import { sendActivationEmail } from '../utils/sendMail.js';
 
+
 const { OAuth2 } = google.auth;
 const client = new OAuth2(process.env.GOOGLE_CLIENT_ID);
 // Register New User
@@ -66,22 +67,31 @@ export const activeUserAccount = asyncHandler(async (req, res) => {
 // User Login
 
 export const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  // const { email, password } = req.body;
+  const { address } = req.body;
 
-  const user = await User.findOne({ email });
-  if (user && (await user.matchPassword(password))) {
+  // const user = await User.findOne({ email });
+  // if (user && (await user.matchPassword(password))) {
+  //   res.json({
+  //     _id: user._id,
+  //     firstName: user.firstName,
+  //     lastName: user.lastName,
+  //     avatar: user.avatar,
+  //     email: user.email,
+  //     isAdmin: user.isAdmin,
+  //     token: generateIdToken(user._id),
+  //   });
+  // } else {
+  //   res.status(401);
+  //   throw new Error('Invalid email or password');
+  // }
+  if(address=="0xce9659d0D1821aF4b575d058dd670eff851826ce"){
     res.json({
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      avatar: user.avatar,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateIdToken(user._id),
-    });
-  } else {
-    res.status(401);
-    throw new Error('Invalid email or password');
+      address:address,
+      token: generateIdToken(address),
+    })
+  }else{
+    res.status(401)
   }
 });
 
